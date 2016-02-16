@@ -26,10 +26,11 @@ describe('Snake', function() {
       assert.equal(snake.x, 300);
       assert.equal(snake.y, 150);
 
-      snake.moveUp();
+      var timeObject = new Date()
+      snake.moveUp(new Date(timeObject.getTime() + 1000))
 
       assert.equal(snake.x, 300);
-      assert.equal(snake.y, 151);
+      assert.equal(snake.y, 160);
     });
   })
 
@@ -39,10 +40,11 @@ describe('Snake', function() {
       assert.equal(snake.x, 300);
       assert.equal(snake.y, 150);
 
-      snake.moveDown();
+      var timeObject = new Date()
+      snake.moveDown(new Date(timeObject.getTime() + 1000))
 
       assert.equal(snake.x, 300);
-      assert.equal(snake.y, 149);
+      assert.equal(snake.y, 140);
     });
   })
 
@@ -52,9 +54,9 @@ describe('Snake', function() {
       assert.equal(snake.x, 300);
       assert.equal(snake.y, 150);
 
-      snake.moveRight();
-
-      assert.equal(snake.x, 301);
+      var timeObject = new Date()
+      snake.moveRight(new Date(timeObject.getTime() + 1000))
+      assert.equal(snake.x, 310);
       assert.equal(snake.y, 150);
     });
   })
@@ -65,9 +67,9 @@ describe('Snake', function() {
       assert.equal(snake.x, 300);
       assert.equal(snake.y, 150);
 
-      snake.moveLeft();
-
-      assert.equal(snake.x, 299);
+      var timeObject = new Date()
+      snake.moveLeft(new Date(timeObject.getTime() + 1000))
+      assert.equal(snake.x, 290);
       assert.equal(snake.y, 150);
     });
   })
