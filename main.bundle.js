@@ -55,13 +55,12 @@
 	'use strict';
 
 	var $ = __webpack_require__(2);
-<<<<<<< HEAD
 	var _ = __webpack_require__(3);
 	var Round = __webpack_require__(5);
 
 	var canvas = document.getElementById('game');
 	var context = canvas.getContext('2d');
-	var scores_array = [];
+	var scores_array = localStorage.getItem("scores").split(",");
 	var speed = 100;
 
 	$('#set-easy-level').on('click', function () {
@@ -78,6 +77,9 @@
 	});
 
 	function startGame() {
+
+	  renderHighScores();
+
 	  $('#start-game').on('click', function () {
 	    var round = new Round({ interval: speed });
 	    var oldDirection = "left";
@@ -132,6 +134,16 @@
 	  });
 	};
 
+	function renderHighScores() {
+	  var scores_html = "";
+	  var scores_array = localStorage.getItem("scores");
+	  scores_array = scores_array.split(",");
+	  for (var i = 0; i < scores_array.length; i++) {
+	    scores_html = scores_html + "<tr><td>" + (i + 1) + "." + "</td><td>" + scores_array[i] + "</td></tr>";
+	  }
+	  $('#table_body').html(scores_html);
+	};
+
 	function gameEnds(canvas, context, snake, score) {
 	  alert("The Snake Died! You suck.");
 	  scores_array.push(score);
@@ -141,28 +153,11 @@
 	  scores_array = scores_array.splice(0, 10);
 	  localStorage.setItem("scores", scores_array);
 	  $('#score').html(0);
-	  var scores_html = "";
 
-	  for (var i = 0; i < scores_array.length; i++) {
-	    scores_html = scores_html + "<tr><td>" + (i + 1) + "." + "</td><td>" + scores_array[i] + "</td></tr>";
-	  }
-
-	  $('#table_body').html(scores_html);
+	  renderHighScores();
 	  context.clearRect(0, 0, canvas.width, canvas.height);
 	}
 
-=======
-
-	function startGame() {
-	  var canvas = document.getElementById('game');
-	  var context = canvas.getContext('2d');
-
-	  $('#start-game').on('click', function () {
-	    context.fillRect(300, 150, 10, 10);
-	  });
-	};
-
->>>>>>> master
 	startGame();
 
 /***/ },
@@ -10002,7 +9997,6 @@
 	}));
 
 
-<<<<<<< HEAD
 /***/ },
 /* 3 */
 /***/ function(module, exports, __webpack_require__) {
@@ -24885,7 +24879,5 @@
 
 	module.exports = Pellet;
 
-=======
->>>>>>> master
 /***/ }
 /******/ ]);
