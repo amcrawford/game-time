@@ -55,6 +55,7 @@
 	'use strict';
 
 	var $ = __webpack_require__(2);
+<<<<<<< HEAD
 	var _ = __webpack_require__(3);
 	var Round = __webpack_require__(5);
 
@@ -150,6 +151,18 @@
 	  context.clearRect(0, 0, canvas.width, canvas.height);
 	}
 
+=======
+
+	function startGame() {
+	  var canvas = document.getElementById('game');
+	  var context = canvas.getContext('2d');
+
+	  $('#start-game').on('click', function () {
+	    context.fillRect(300, 150, 10, 10);
+	  });
+	};
+
+>>>>>>> master
 	startGame();
 
 /***/ },
@@ -9989,6 +10002,7 @@
 	}));
 
 
+<<<<<<< HEAD
 /***/ },
 /* 3 */
 /***/ function(module, exports, __webpack_require__) {
@@ -24871,5 +24885,7 @@
 
 	module.exports = Pellet;
 
+=======
+>>>>>>> master
 /***/ }
 /******/ ]);
