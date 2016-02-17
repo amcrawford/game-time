@@ -18,7 +18,24 @@ describe('Snake', function() {
     it('should assign a width', function(){
       assert.equal(snake.width, 10);
     });
+    it('should assign an interval speed', function(){
+      assert.equal(snake.interval, 100);
+    })
   });
+
+  context('can be created with assigned attributes', function(){
+    var snake = new Snake({x: 1, y: 10, interval: 50});
+
+    it('should assign an x coordinate', function() {
+      assert.equal(snake.x, 1);
+    });
+    it('should assign a y coordinate', function() {
+      assert.equal(snake.y, 10);
+    });
+    it('should assign an interval speed', function(){
+      assert.equal(snake.interval, 50);
+    })
+  })
 
   describe('Snake moves up', function() {
     it('should increase y coordinate value', function() {

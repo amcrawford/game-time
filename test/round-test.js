@@ -9,6 +9,12 @@ describe('Round', function() {
       var round = new Round({});
       assert(round.snake);
     });
+
+    it('should assign the snake an interval based on options', function(){
+      var round = new Round({interval: 50});
+      assert.equal(round.snake.interval, 50);
+    });
+
     it('should assign a unique snake instance', function() {
       var round_one = new Round({});
       var round_two = new Round({});

@@ -8,29 +8,37 @@
 <body>
   <div class="gameplay">
     <div class="row">
-      <h1><center>Snake</center></h1>
-      <center><button type="button" name="start" id="start-game">Start New Game</button></center><br>
-      <center><canvas id="game" width="400px" height="300px" style="border:solid"></canvas></center>
+      <div class="col s4" id="settings-column"><br><br>
+        <center><h3> Current Level: <span id="difficulty-level"> Easy </span> </h3></center>
+        <center> Change Level: <br><button type="button" name="easy-level" id="set-easy-level">Easy</button>
+        <button type="button" name="med-level" id="set-med-level">Medium</button>
+        <button type="button" name="hard-level" id="set-hard-level">Hard</button></center><br>
+        <div class="row container">
+          <h3><center>Highest Scores</center></h3>
+          <table class="striped">
+            <thead>
+              <tr>
+                  <th data-field="id">Name</th>
+                  <th data-field="name">Score</th>
+              </tr>
+            </thead>
 
-
-      <div class="score-card">
-        <center><h3> Score: <span id="score">0</span></h3><center>
+            <tbody id="table_body"></tbody>
+          </table>
+        </div>
       </div>
+
+      <div class="col s5" id="game-canvas">
+        <h1><center>Snake</center></h1>
+        <center><button type="button" name="start" id="start-game">Start New Game</button></center><br>
+        <center><canvas id="game" width="400px" height="300px" style="border:solid"></canvas></center>
+
+        <div class="score-card">
+          <center><h3> Score: <span id="score">0</span></h3><center>
+        </div>
+      </div>
+
     </div>
-
-  <div class="row container">
-    <h2><center>Highest Scores</center></h2>
-    <table class="striped">
-      <thead>
-        <tr>
-            <th data-field="id">Name</th>
-            <th data-field="name">Score</th>
-        </tr>
-      </thead>
-
-      <tbody id="table_body"></tbody>
-    </table>
-  </div>
 </div>
 
 <script src="main.bundle.js"></script>
