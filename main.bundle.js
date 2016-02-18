@@ -136,9 +136,11 @@
 	function renderHighScores() {
 	  var scores_html = "";
 	  var scores_array = localStorage.getItem("scores");
-	  scores_array = scores_array.split(",");
-	  for (var i = 0; i < scores_array.length; i++) {
-	    scores_html = scores_html + "<tr><td>" + (i + 1) + "." + "</td><td>" + scores_array[i] + "</td></tr>";
+	  if (scores_array) {
+	    scores_array = scores_array.split(",");
+	    for (var i = 0; i < scores_array.length; i++) {
+	      scores_html = scores_html + "<tr><td>" + (i + 1) + "." + "</td><td>" + scores_array[i] + "</td></tr>";
+	    }
 	  }
 	  $('#table_body').html(scores_html);
 	};
