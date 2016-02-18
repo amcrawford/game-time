@@ -6,6 +6,7 @@
   <title>Snake</title>
 </head>
 <body>
+  
   <div class="gameplay">
     <div class="row">
       <div class="col s4" id="scores-column"><br><br>
@@ -27,6 +28,7 @@
       <div class="col s4" id="game-canvas">
         <h1><center>Snake</center></h1>
         <center><button type="button" name="start" id="start-game">Start New Game</button></center><br>
+        <center><button type="button" name="rave-level" id="rave-mode">Party Mode</button></center><br>
         <center><canvas id="game" width="400px" height="300px" style="border:solid"></canvas></center>
 
         <div class="score-card">
@@ -43,6 +45,8 @@
 
     </div>
 </div>
+
+<audio id="audio" src="./songs/allnight.mp3" ></audio>
 
 <script src="main.bundle.js"></script>
 

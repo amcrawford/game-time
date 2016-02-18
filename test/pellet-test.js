@@ -29,6 +29,6 @@ describe('Pellet', function() {
       assert((pellet.x !== 150) && (pellet.y !== 150));
       assert.equal(pellet.height, 10);
       assert.equal(pellet.width, 10);
-    })
-  })
+    });
+  });
 });
