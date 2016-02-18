@@ -59,7 +59,7 @@
 
 	var canvas = document.getElementById('game');
 	var ctx = canvas.getContext('2d');
-	var scores_array = localStorage.getItem("scores").split(",");
+	var scores = localStorage.getItem("scores");
 	var speed = 100;
 
 	$('#set-easy-level').on('click', function () {
@@ -147,11 +147,18 @@
 
 	function gameEnds(canvas, ctx, snake, score) {
 	  alert("The Snake Died!");
-	  scores_array.push(score);
-	  scores_array.sort(function (a, b) {
-	    return b - a;
-	  });
-	  scores_array = scores_array.splice(0, 5);
+	  var scores = localStorage.getItem("scores");
+
+	  if (scores !== "") {
+	    var scores_array = scores.split(',');
+	    scores_array.push(score);
+	    scores_array.sort(function (a, b) {
+	      return b - a;
+	    });
+	    scores_array = scores_array.splice(0, 5);
+	  } else {
+	    var scores_array = [score];
+	  }
 	  localStorage.setItem("scores", scores_array);
 	  $('#score').html(0);
 
