@@ -55,15 +55,116 @@
 	'use strict';
 
 	var $ = __webpack_require__(2);
+	var Round = __webpack_require__(3);
+
+	var canvas = document.getElementById('game');
+	var ctx = canvas.getContext('2d');
+	var scores = localStorage.getItem("scores");
+	var speed = 100;
+
+	$('#set-easy-level').on('click', function () {
+	  speed = 100;
+	  $('#difficulty-level').html('Easy');
+	});
+	$('#set-med-level').on('click', function () {
+	  speed = 50;
+	  $('#difficulty-level').html('Medium');
+	});
+	$('#set-hard-level').on('click', function () {
+	  speed = 30;
+	  $('#difficulty-level').html('Hard');
+	});
 
 	function startGame() {
-	  var canvas = document.getElementById('game');
-	  var context = canvas.getContext('2d');
+
+	  renderHighScores();
 
 	  $('#start-game').on('click', function () {
-	    context.fillRect(300, 150, 10, 10);
+	    var round = new Round({ interval: speed });
+	    var oldDirection = "left";
+
+	    var _direction = function direction() {
+	      $(document).keydown(function (e) {
+	        if (e.keyCode === 37 && (round.snake.positions.length < 2 || oldDirection !== "right")) {
+	          _direction = function () {
+	            round.snake.moveLeft();
+	            oldDirection = "left";
+	          };
+	        } else if (e.keyCode === 39 && (round.snake.positions.length < 2 || oldDirection !== "left")) {
+	          _direction = function () {
+	            round.snake.moveRight();
+	            oldDirection = "right";
+	          };
+	        } else if (e.keyCode === 40 && (round.snake.positions.length < 2 || oldDirection !== "down")) {
+	          _direction = function () {
+	            round.snake.moveUp();
+	            oldDirection = "up";
+	          };
+	        } else if (e.keyCode === 38 && (round.snake.positions.length < 2 || oldDirection !== "up")) {
+	          _direction = function () {
+	            round.snake.moveDown();
+	            oldDirection = "down";
+	          };
+	        }
+	      });
+	    };
+
+	    requestAnimationFrame(function gameLoop() {
+	      ctx.clearRect(0, 0, canvas.width, canvas.height);
+	      round.snake.draw(ctx);
+
+	      if (round.snakeIntersectsWall(canvas) || round.snake.snakeIntersectsItself()) {
+	        gameEnds(canvas, ctx, round.snake, round.score);
+	      } else {
+	        if (round.snakeIntersectsPellet()) {
+	          round.pellet.reset();
+	          round.doesPelletOverlapWithSnake();
+	          round.pellet.draw(ctx);
+	          round.snake.grow();
+	          round.increaseScore();
+	        }
+	        _direction();
+	        round.pellet.draw(ctx);
+	        setTimeout(function () {
+	          requestAnimationFrame(gameLoop);
+	        }, round.snake.interval);
+	      }
+	    });
 	  });
+	}
+
+	function renderHighScores() {
+	  var scores_html = "";
+	  var scores_array = localStorage.getItem("scores");
+	  if (scores_array !== "") {
+	    scores_array = scores_array.split(",");
+	    for (var i = 0; i < scores_array.length; i++) {
+	      scores_html = scores_html + "<tr><td>" + (i + 1) + "." + "</td><td>" + scores_array[i] + "</td></tr>";
+	    }
+	  }
+	  $('#table_body').html(scores_html);
 	};
+
+	function gameEnds(canvas, ctx, snake, score) {
+	  alert("The Snake Died!");
+	  var scores = localStorage.getItem("scores");
+
+	  if (scores !== "") {
+	    var scores_array = scores.split(',');
+	    scores_array.push(score);
+	    scores_array.sort(function (a, b) {
+	      return b - a;
+	    });
+	    scores_array = scores_array.splice(0, 5);
+	  } else {
+	    var scores_array = [score];
+	  }
+	  localStorage.setItem("scores", scores_array);
+	  $('#score').html(0);
+
+	  renderHighScores();
+	  ctx.clearRect(0, 0, canvas.width, canvas.height);
+	}
 
 	startGame();
 
@@ -9903,6 +10004,134 @@
 	return jQuery;
 	}));
 
+
+/***/ },
+/* 3 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	var $ = __webpack_require__(2);
+	var Snake = __webpack_require__(4);
+	var Pellet = __webpack_require__(5);
+
+	function Round(options) {
+	  this.snake = new Snake({ interval: options.interval });
+	  this.pellet = new Pellet({});
+	  this.score = 0;
+	}
+
+	Round.prototype.increaseScore = function () {
+	  this.score++;
+	  $('#score').html(this.score);
+	};
+
+	Round.prototype.snakeIntersectsPellet = function () {
+	  return Math.abs(this.snake.positions[0][0] - this.pellet.x) < 10 && Math.abs(this.snake.positions[0][1] - this.pellet.y) < 10;
+	};
+
+	Round.prototype.snakeIntersectsWall = function () {
+	  return this.snake.positions[0][0] < 0 || this.snake.positions[0][1] < 0 || this.snake.positions[0][0] > 390 || this.snake.positions[0][1] > 290;
+	};
+
+	Round.prototype.doesPelletOverlapWithSnake = function () {
+	  var self = this;
+	  this.snake.positions.forEach(function (position) {
+	    while (Math.abs(position[0] - self.pellet.x) < 10 && Math.abs(position[1] - self.pellet.y) < 10) {
+	      self.pellet.reset();
+	    }
+	  });
+	};
+
+	module.exports = Round;
+
+/***/ },
+/* 4 */
+/***/ function(module, exports) {
+
+	"use strict";
+
+	function Snake(options) {
+	  this.x = options.x || 300;
+	  this.y = options.y || 150;
+	  this.positions = options.positions || [[300, 150]];
+	  this.height = options.height || 10;
+	  this.width = options.width || 10;
+	  this.interval = options.interval || 100;
+	}
+
+	Snake.prototype.moveUp = function () {
+	  this.y += 10;
+	};
+
+	Snake.prototype.moveDown = function () {
+	  this.y -= 10;
+	};
+
+	Snake.prototype.moveRight = function () {
+	  this.x += 10;
+	};
+
+	Snake.prototype.moveLeft = function () {
+	  this.x -= 10;
+	};
+
+	Snake.prototype.grow = function () {
+	  this.positions.push([this.x, this.y]);
+	};
+
+	Snake.prototype.draw = function (context) {
+	  context.fillStyle = "#000000";
+	  this.positions.unshift([this.x, this.y]);
+	  this.positions.pop();
+	  this.positions.forEach(function (num) {
+	    context.fillRect(num[0], num[1], 10, 10);
+	  });
+	  return this;
+	};
+
+	Snake.prototype.snakeIntersectsItself = function () {
+	  var matchCount = 0;
+	  var self = this;
+	  this.positions.forEach(function (position) {
+	    if (Math.abs(position[0] - self.positions[0][0]) < 10 && Math.abs(position[1] - self.positions[0][1]) < 10) {
+	      matchCount++;
+	    }
+	  });
+	  return matchCount > 1;
+	};
+
+	module.exports = Snake;
+
+/***/ },
+/* 5 */
+/***/ function(module, exports) {
+
+	"use strict";
+
+	function Pellet(options) {
+	  this.x = options.x || 150;
+	  this.y = options.y || 150;
+	  this.height = options.height || 10;
+	  this.width = options.width || 10;
+	}
+
+	Pellet.prototype.draw = function (context) {
+	  context.fillStyle = "#7FFF00";
+	  context.fillRect(this.x, this.y, this.height, this.width);
+	  return this;
+	};
+
+	Pellet.prototype.reset = function () {
+	  this.x = randomNumber(0, 390);
+	  this.y = randomNumber(0, 290);
+	};
+
+	function randomNumber(minimum, maximum) {
+	  return Math.round(Math.random() * (maximum - minimum) + minimum);
+	}
+
+	module.exports = Pellet;
 
 /***/ }
 /******/ ]);
