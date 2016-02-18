@@ -9950,6 +9950,7 @@
 	  this.height = options.height || 10;
 	  this.width = options.width || 10;
 	  this.interval = options.interval || 100;
+	  this.trail = [];
 	}
 
 	Snake.prototype.moveUp = function () {
@@ -9975,11 +9976,20 @@
 	Snake.prototype.draw = function (context) {
 	  context.fillStyle = "#000000";
 	  this.positions.unshift([this.x, this.y]);
-	  this.positions.pop();
+	  this.trail.push(this.positions.pop());
 	  this.positions.forEach(function (num) {
 	    context.fillRect(num[0], num[1], 10, 10);
 	  });
+
 	  return this;
+	};
+
+	Snake.prototype.drawTrail = function (context) {
+	  var trailColors = ["#7FFF00", "#FF6347", "#FFFF00", "#7B68EE", "#1E90FF", "#FF00FF"];
+	  context.fillStyle = trailColors[randomNumber(0, this.positions.length / 4)];
+	  this.trail.forEach(function (num) {
+	    context.fillRect(num[0], num[1], 10, 10);
+	  });
 	};
 
 	Snake.prototype.snakeIntersectsItself = function () {
@@ -9992,6 +10002,26 @@
 	  });
 	  return matchCount > 1;
 	};
+
+	Snake.prototype.canMoveLeft = function (e, oldDirection) {
+	  return e.keyCode === 37 && (this.positions.length < 2 || oldDirection !== "right");
+	};
+
+	Snake.prototype.canMoveRight = function (e, oldDirection) {
+	  return e.keyCode === 39 && (this.positions.length < 2 || oldDirection !== "left");
+	};
+
+	Snake.prototype.canMoveUp = function (e, oldDirection) {
+	  return e.keyCode === 40 && (this.positions.length < 2 || oldDirection !== "down");
+	};
+
+	Snake.prototype.canMoveDown = function (e, oldDirection) {
+	  return e.keyCode === 38 && (this.positions.length < 2 || oldDirection !== "up");
+	};
+
+	function randomNumber(minimum, maximum) {
+	  return Math.round(Math.random() * (maximum - minimum) + minimum);
+	}
 
 	module.exports = Snake;
 
