@@ -136,7 +136,6 @@
 	function renderHighScores() {
 	  var scores_html = "";
 	  var scores_array = localStorage.getItem("scores");
-	  debugger;
 	  if (scores_array !== "") {
 	    scores_array = scores_array.split(",");
 	    for (var i = 0; i < scores_array.length; i++) {
