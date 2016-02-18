@@ -8,13 +8,9 @@
 <body>
   <div class="gameplay">
     <div class="row">
-      <div class="col s4" id="settings-column"><br><br>
-        <center><h3> Current Level: <span id="difficulty-level"> Easy </span> </h3></center>
-        <center> Change Level: <br><button type="button" name="easy-level" id="set-easy-level">Easy</button>
-        <button type="button" name="med-level" id="set-med-level">Medium</button>
-        <button type="button" name="hard-level" id="set-hard-level">Hard</button></center><br>
+      <div class="col s4" id="scores-column"><br><br>
         <div class="row container">
-          <h3><center>Highest Scores</center></h3>
+          <h3><center>Your High Scores</center></h3>
           <table class="striped">
             <thead>
               <tr>
@@ -28,7 +24,7 @@
         </div>
       </div>
 
-      <div class="col s5" id="game-canvas">
+      <div class="col s4" id="game-canvas">
         <h1><center>Snake</center></h1>
         <center><button type="button" name="start" id="start-game">Start New Game</button></center><br>
         <center><canvas id="game" width="400px" height="300px" style="border:solid"></canvas></center>
@@ -36,6 +32,13 @@
         <div class="score-card">
           <center><h3> Score: <span id="score">0</span></h3><center>
         </div>
+      </div>
+
+      <div class="col s4" id="settings-column"><br><br>
+        <center><h3> Current Level: <span id="difficulty-level"> Easy </span> </h3></center>
+        <center> Change Level: <br><button type="button" name="easy-level" id="set-easy-level">Easy</button>
+        <button type="button" name="med-level" id="set-med-level">Medium</button>
+        <button type="button" name="hard-level" id="set-hard-level">Hard</button></center><br>
       </div>
 
     </div>
