@@ -62,34 +62,47 @@
 	var speed = 100;
 	var audio = document.getElementById("audio");
 	var mode = "normal";
+	var activeRound = 0;
 
 	// Set Difficulty Levels
 	$('#set-easy-level').on('click', function () {
-	  speed = 100;
-	  $('#difficulty-level').html('Easy');
+	  if (!activeRound) {
+	    speed = 100;
+	    $('#difficulty-level').html('Easy');
+	  };
 	});
 
 	$('#set-med-level').on('click', function () {
-	  speed = 50;
-	  $('#difficulty-level').html('Medium');
+	  if (!activeRound) {
+	    speed = 50;
+	    $('#difficulty-level').html('Medium');
+	  };
 	});
 
 	$('#set-hard-level').on('click', function () {
-	  speed = 30;
-	  $('#difficulty-level').html('Hard');
+	  if (!activeRound) {
+	    speed = 30;
+	    $('#difficulty-level').html('Hard');
+	  };
 	});
 
 	// Set Gameplay Type
 
 	$('#rave-mode').on('click', function () {
-	  mode = "rave";
-	  audio.play();
-	  startGame();
+	  if (!activeRound) {
+	    mode = "rave";
+	    audio.play();
+	    activeRound = 1;
+	    startGame();
+	  };
 	});
 
 	$('#start-game').on('click', function () {
-	  mode = "normal";
-	  startGame();
+	  if (!activeRound) {
+	    mode = "normal";
+	    activeRound = 1;
+	    startGame();
+	  };
 	});
 
 	// Main Game Functions
@@ -194,6 +207,7 @@
 	  $('#score').html(0);
 
 	  renderHighScores();
+	  activeRound = 0;
 	  ctx.clearRect(0, 0, canvas.width, canvas.height);
 	}
 
